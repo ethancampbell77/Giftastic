@@ -48,7 +48,8 @@ form#topic-form {
 
 input#add-topic {
     background-color: olivedrab;
-    border-style: 1px solid olivedrab;
+    border-radius: 10px;
+    box-shadow: 1px 1px 10px black;
     font-weight: bold;
     font-size: 20px;
     color: black;
@@ -56,15 +57,14 @@ input#add-topic {
 }
 
 div#gifs-appear-here {
-    box-shadow: 2px 2px 10px black;
     width: 90%;
     box-align: center;
 }
 
-div#gifDiv {
-    width: 30%;
-    float: left;
-}
+/* div#gifStyle {
+    width: 70%;
+    overflow: auto;
+} */
 
 p {
     font-family: 'News Cycle', sans-serif;
@@ -72,7 +72,6 @@ p {
     padding: 1px;
     margin-bottom: 2%;
 }
-
 
 button {
     background-color: orange;

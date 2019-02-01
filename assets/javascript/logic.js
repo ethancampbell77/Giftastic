@@ -1,12 +1,9 @@
 // JavaScript & JQuery doc //
 
-// My Array of "Interesting" topics
-var topics = ["eastbound and down", "silicon valley", "broken lizard", "workaholics", "Always Sunny"];
+$(document).ready(function() {
 
-// Function to capture data attribute 
-function addTopic() {
-$(this).attr("data-name");
-}
+// My Array of "Interesting" topics
+var topics = ["eastbound and down", "silicon valley", "broken lizard", "workaholics", "tim and eric"];
 
 // Function to create my topic buttons
 function renderButtons() {
@@ -30,23 +27,20 @@ for (var i = 0; i < topics.length; i++) {
   }
 }
 
-// Function to add user's topic buttons and gifs
+// Function to add user's topic buttons 
 $("#add-topic").on("click", function(event) {
 
 // Prevents the button's natural function
-    event.preventDefault();
+event.preventDefault();
 
 // Takes in the user's input and stores it in Variable "Topic"
-    var topic = $("#topic-input").val().trim();
+var topic = $("#topic-input").val().trim();
 
 // Adds users topic to my Array
-    topics.push(topic);
-
-// Call to render buttons
-    //renderButtons();
-
+topics.push(topic);
+    
 // Clears the form after user's topic is submitted to allow for more data entry - no backspacing needed
-    $("form").trigger("reset");
+$("form").trigger("reset");
 
     if (topic !== "") {
         renderButtons();
@@ -55,58 +49,85 @@ $("#add-topic").on("click", function(event) {
     else {
         alert("You NEED to use your WORDS if you wanna be a RIPPER");
     }
-
 });
-    
-$(document).on("click", ".topic", addTopic);
+    renderButtons();
 
-// Displays initial topic buttons
-renderButtons();
+ // Event listener for all button elements
+$(document).on("click", ".topic", function() {
+// In this case, the "this" keyword refers to the button that was clicked
+var topic = $(this).attr("data-name");
 
-// // Giphy URL and API for queries
-// var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=Y3sxw8kSnw3e58WeHUYixdPhCumDZsUt&limit=10";
+// Giphy URL and API for queries
+var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topic + "&api_key=Y3sxw8kSnw3e58WeHUYixdPhCumDZsUt&limit=10";
     
-//     $.ajax({
-//     url: queryURL,
-//     method: "GET"
-//     })
+$.ajax({
+url: queryURL,
+method: "GET"
+})
+
+.then(function(response) {
     
-//     .then(function(response) {
-        
-//     var results = response.data;
+var results = response.data;
+
+// // Looping over every result item
+for (var j = 0; j < results.length; j++) {
     
+
+if (results[j].rating) {
     
+    // Dynamic Div
+    var gifDiv = $("<div>");
+
+    // Stores rating of gif
+    var rating = results[j].rating;
+
+    // CDynamic Para
+    var p = $("<p>").text("Rating: " + rating);
+
+    // Dynamic Image
+    var topicImage = $("<img>");
+
+    // Setting Attributes for IMG - will also help enable pausing
+    topicImage.attr("src", results[j].images.fixed_height_still.url);
+    topicImage.attr('data-still', results[j].images.fixed_height_still.url);
+    topicImage.attr('data-state', 'still');
+    topicImage.addClass('gif');
+    topicImage.attr('data-animate', results[j].images.fixed_height.url);
+
+        // Appends Gif & Rating
     
-//     // // Looping over every result item
-//     for (var j = 0; j < results.length; j++) {
+    gifDiv.append(topicImage);
+    gifDiv.append(p);
+
+    // Sends to gifs-appear-here Div (HTML not Dynamic)
+    $("#gifs-appear-here").prepend(gifDiv);
+  }
+}
+
+// function for Gifs pausing
+$(document).on("click", ".gif", function(){
+var state = $(this).attr("data-state");
+    if ( state == "still"){
+            $(this).attr("src", $(this).data("animate"));
+            $(this).attr("data-state", "animate");
+        }
+    else{
+        $(this).attr("src", $(this).data("still"));
+        $(this).attr("data-state", "still");
+        };
+      });
+    });
+  })
+});
+
     
-//         // Only taking action if the photo has an appropriate rating
-//         if (results[i].rating) {
-//           // Creating a div for the gif
-//           var gifDiv = $("<div id='gifStyle'>");
+
     
-//           // Storing the result item's rating
-//           var rating = results[i].rating;
-    
-//           // Creating a paragraph tag with the result item's rating
-//           var p = $("<p>").text("Rating: " + rating);
-    
-//           // Creating an image tag
-//           var topicImage = $("<img>");
-    
-//           // Giving the image tag an src attribute of a proprty pulled off the
-//           // result item
-//          topicImage.attr("src", results[i].images.fixed_height.url);
-    
-//           // Appending the paragraph and personImage we created to the "gifDiv" div we created
-          
-//           gifDiv.append(topicImage);
-//           gifDiv.append(p);
-    
-//           // Prepending the gifDiv to the "#gifs-appear-here" div in the HTML
-//           $("#gifs-appear-here").prepend(gifDiv);
-//         }
-//         }
-//         });
+
+
+
+
+
+ 
     
   

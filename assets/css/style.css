@@ -21,7 +21,8 @@ body {
 }
 
 div#header {
-    background-image: url(assets/images/plywood.png);
+    background-image: url("../images/plywood.png");
+    background-color: blue;
     background-size: 100%;
     color: rgb(236, 255, 65);
     box-shadow: 2px 2px 10px black;
